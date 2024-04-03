@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { addTodo, updateTodo } from "../features/todo/todoSlice";
 
-function AddTodo({ editTodo }) {
+function AddTodo({ editTodo, setEditTodo }) {
     const [input, setInput] = useState("");
     const [isEditing, setIsEditing] = useState(false);
     const dispatch = useDispatch();
@@ -12,6 +12,7 @@ function AddTodo({ editTodo }) {
             setInput(editTodo.text);
             setIsEditing(true);
         } else {
+            setInput("");
             setIsEditing(false);
         }
     }, [editTodo]);
@@ -22,11 +23,12 @@ function AddTodo({ editTodo }) {
         if (isEditing) {
             dispatch(updateTodo({ id: editTodo.id, text: input }));
             setInput("");
+            setIsEditing(false);
+            setEditTodo(null);
         } else {
             dispatch(addTodo(input));
             setInput("");
         }
-        setIsEditing(false);
     };
 
     return (
